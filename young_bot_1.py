@@ -2,22 +2,21 @@ import telebot
 from telebot import types
 import apiai
 import json
-import config_bot
-import markups_bot
-import answers_bot
+import config_bot #make config_bot.py
+import markups_bot 
+import answers_bot #make answers_bot.py
 
 bot = telebot.TeleBot(config_bot.TG_TOKEN)
 
 
 @bot.message_handler(commands=['start', 'help'])
 def send_welcome(message):
-		bot.reply_to(message,
-								 'Здравствуйте! Я электронный помощник Яна Кальянова. Я готов ответить на интересующие Вас вопросы или мы можем просто поболтать! Пожалуйста, выберете интересующий Вас пункт меню:', reply_markup=markups_bot.markup_start_inline_menu)
+		bot.reply_to(message, text='', reply_markup=markups_bot.markup_start_inline_menu)
 
 
 @bot.message_handler(commands=['order'])
 def get_order(message):
-		bot.reply_to(message, 'Запрос на бронирование отправлен. Ян с Вами свяжется в ближайшее время.', reply_markup=markups_bot.markup_start_inline_menu)
+		bot.reply_to(message, text='', reply_markup=markups_bot.markup_start_inline_menu)
 		bot.forward_message(chat_id=config_bot.CHAT_ID, from_chat_id=message.from_user.id, message_id=message.message_id)
 
 @bot.message_handler(content_types=['text'])
@@ -32,7 +31,7 @@ def text_message(message):
 		if response:
 				bot.send_message(message.chat.id, response)
 		else:
-				bot.send_message(message.chat.id, 'Я вас не понял, нужно немного подучиться. Я сохраню Ваше сообщение, и Ян объяснит что Вы имели ввиду.')
+				bot.send_message(message.chat.id, text='')
 
 @bot.callback_query_handler(func=lambda call: True)
 def call_back_start_menu(call):
